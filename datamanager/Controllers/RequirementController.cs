@@ -16,7 +16,7 @@ namespace datamanager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRequirement([FromBody]Template template) 
+        public async Task<IActionResult> CreateRequirement(Template template) 
         {
             try
             {
