@@ -21,8 +21,7 @@ namespace infrastructure.Factory
 
         public object GetObjectDataBase()
         {
-
-            //CosmosClient client = new CosmosClient(_configuration.GetConnectionString("mongodbconnection"));
+          
             CosmosClient client = new CosmosClient(_configuration.GetSection("endpoint").Value, _configuration.GetSection("key").Value, new CosmosClientOptions
             {
 
@@ -33,8 +32,7 @@ namespace infrastructure.Factory
                 ConnectionMode = ConnectionMode.Direct,
                 RequestTimeout=TimeSpan.FromSeconds(60)
 
-            });
-            //var cosmosClient = new CosmosClient("AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==");
+            });           
 
             return client;
         }

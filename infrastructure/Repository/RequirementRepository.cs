@@ -31,7 +31,7 @@ namespace infrastructure.Repository
                     resDomain = new ResponseDomain();
                     resDomain.template = res.Resource;
                     resDomain.StatusCode = HttpStatusCode.OK;
-                    resDomain.Message = _configuration.GetSection("message_create_request").Value;
+                    resDomain.Message = ResourceInfra.MessageRequestCreated;
                     resDomain.RequestId = template.id;
                     resDomain.Code = 200;
                     resDomain.Error = false;

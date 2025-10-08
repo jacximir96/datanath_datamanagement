@@ -18,8 +18,7 @@ namespace infrastructure.Factory
         }
 
         public object GetObjectDataBase()
-        {
-            //string con = _configuration.GetConnectionString("sqlconnection");
+        {           
             return null;
         }
     }

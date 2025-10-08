@@ -8,7 +8,6 @@ namespace domain.Entities
 {
     public class Entities2
     {
-
         public string? name { get; set; }
         public string? toName { get; set; }
         public List<Properties>? properties { get; set; }
