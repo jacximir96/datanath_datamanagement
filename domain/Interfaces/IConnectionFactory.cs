@@ -8,6 +8,6 @@ namespace domain.Interfaces
 {
     public interface IConnectionFactory
     {
-        IConnectioDataBase CreateConnectio(string dataBase);
+        IConnectioDataBase CreateConnection(string dataBase);
     }
 }

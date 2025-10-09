@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace infrastructure.Repository
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository
     {
-        Task<ResponseDomain> CreateTemplate(T template);
-
+        Task<ResponseDomain> CreateTemplate(Template template);
+        Task<Requirement> GetRequirement(string idrequirement, Connection connection);       
     }
 }

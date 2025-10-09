@@ -16,7 +16,7 @@ namespace infrastructure.Factory
             _configuration = configuration;
         }  
         
-        public IConnectioDataBase CreateConnectio(string dataBase) 
+        public IConnectioDataBase CreateConnection(string dataBase) 
         {
             IConnectioDataBase connectioDataBase = null;    
 
@@ -37,8 +37,6 @@ namespace infrastructure.Factory
 
             return connectioDataBase;
 
-
         }
-
     }
 }

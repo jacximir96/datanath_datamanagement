@@ -9,10 +9,10 @@ namespace application.Services
 {
     public class RequirementService : IRequirement
     {
-        private readonly IRepository<Template> _repository;
+        private readonly IRepository _repository;
         private readonly IConfiguration _config;
         
-        public RequirementService(IRepository<Template> repository, IConfiguration config) 
+        public RequirementService(IRepository repository, IConfiguration config) 
         { 
             _repository = repository;
             _config = config;
@@ -24,7 +24,7 @@ namespace application.Services
             try
             {
                 template.id = Guid.NewGuid().ToString();
-                template.estado = _config.GetSection("estado").Value;
+                template.status = _config.GetSection("estado").Value;
                 response=await _repository.CreateTemplate(template);
 
             }

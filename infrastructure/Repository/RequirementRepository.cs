@@ -7,7 +7,7 @@ using System.Net;
 
 namespace infrastructure.Repository
 {
-    public class RequirementRepository : IRepository<Template>
+    public class RequirementRepository : IRepository
     {
 
         private readonly IConnectionFactory _connection;
@@ -24,7 +24,7 @@ namespace infrastructure.Repository
             ResponseDomain resDomain = null;
             try
             {             
-                using (CosmosClient cosmos = (CosmosClient)_connection.CreateConnectio("cosmosdb").GetObjectDataBase()) 
+                using (CosmosClient cosmos = (CosmosClient)_connection.CreateConnection("cosmosdb").GetObjectDataBase()) 
                 {
                     var container = cosmos.GetDatabase(_configuration.GetSection("cosmosdb").Value).GetContainer(_configuration.GetSection("requirementcontainer").Value);
                     var res = await container.CreateItemAsync(template, new PartitionKey(template.id));
@@ -46,6 +46,33 @@ namespace infrastructure.Repository
             return resDomain;
         }
 
+        public async Task<Requirement> GetRequirement(string idrequirement, Connection connection)
+        {
+            List<Requirement> requirements = new List<Requirement>();
+            try
+            {
+                using (CosmosClient cosmos = (CosmosClient)_connection.CreateConnection(connection.adapter).GetObjectDataBase())
+                {
+                    var query = new QueryDefinition("SELECT * FROM c WHERE c.id = @id")
+    .WithParameter("@id", idrequirement);
+                    var container = cosmos.GetDatabase(_configuration.GetSection("cosmosdb").Value).GetContainer(_configuration.GetSection("requirementcontainer").Value);
+                    using (var result = container.GetItemQueryIterator<Requirement>(query))
+                    {
 
+                        while (result.HasMoreResults)
+                        {
+                            var _response = await result.ReadNextAsync();
+                            requirements.AddRange(_response.ToList());
+                        }
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                e.Message.ToString();
+            }
+            return requirements.FirstOrDefault();
+        }
     }
 }
