@@ -7,7 +7,7 @@ using System.Net;
 
 namespace application.Services
 {
-    public class RequirementService : IRequirement
+    public class RequirementService : IRequirement, IResponse
     {
         private readonly IRepository _repository;
         private readonly IConfiguration _config;
@@ -26,14 +26,13 @@ namespace application.Services
                 template.id = Guid.NewGuid().ToString();
                 template.status = _config.GetSection("estado").Value;
                 response=await _repository.CreateTemplate(template);
-
+                return response;    
             }
             catch (Exception e) 
             {
-                e.Message.ToString();
+                response = GetResponse(e.Message,false);
+                return response;
             }
-            return response;
-       
         }
 
         public ResponseDomain GetResponse(string message, bool isSuccess)

@@ -9,6 +9,6 @@ namespace application.Interfaces
 {
     public interface ISubRequestCompleted
     {
-        Task ReceiveSubRequestCompleted(SubRequestCompleted subReq);
+        Task<ResponseDomain> ReceiveSubRequestCompleted(SubRequestCompleted subReq);
     }
 }

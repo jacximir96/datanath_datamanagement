@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace domain.Interfaces
 {
-    public interface ISubRequestCompletedRepository
+    public interface IResponseDomain
     {
-        Task<ResponseDomain> Update(SubRequestCompleted subReq, Connection connection);
+        ResponseDomain GetResponse(string message, bool isSuccess);
     }
 }

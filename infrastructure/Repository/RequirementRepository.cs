@@ -7,7 +7,7 @@ using System.Net;
 
 namespace infrastructure.Repository
 {
-    public class RequirementRepository : IRepository
+    public class RequirementRepository : IRepository, IResponseDomain
     {
 
         private readonly IConnectionFactory _connection;
@@ -37,42 +37,32 @@ namespace infrastructure.Repository
                     resDomain.Error = false;
 
                 }
-                                
+              return resDomain;              
             }
             catch (Exception e)
             {
-                e.Message.ToString();
+                resDomain = GetResponse(e.Message,false);
+                return resDomain;
             }
-            return resDomain;
+
         }
 
-        public async Task<Requirement> GetRequirement(string idrequirement, Connection connection)
+
+        public ResponseDomain GetResponse(string message, bool isSuccess)
         {
-            List<Requirement> requirements = new List<Requirement>();
-            try
+            ResponseDomain response = new ResponseDomain();
+            if (isSuccess)
             {
-                using (CosmosClient cosmos = (CosmosClient)_connection.CreateConnection(connection.adapter).GetObjectDataBase())
-                {
-                    var query = new QueryDefinition("SELECT * FROM c WHERE c.id = @id")
-    .WithParameter("@id", idrequirement);
-                    var container = cosmos.GetDatabase(_configuration.GetSection("cosmosdb").Value).GetContainer(_configuration.GetSection("requirementcontainer").Value);
-                    using (var result = container.GetItemQueryIterator<Requirement>(query))
-                    {
-
-                        while (result.HasMoreResults)
-                        {
-                            var _response = await result.ReadNextAsync();
-                            requirements.AddRange(_response.ToList());
-                        }
-                    }
-                }
-
+                response.Message = message;
+                response.StatusCode = HttpStatusCode.OK;
             }
-            catch (Exception e)
+            else
             {
-                e.Message.ToString();
+                response.Message = message;
+                response.StatusCode = HttpStatusCode.BadRequest;
             }
-            return requirements.FirstOrDefault();
+
+            return response;
         }
     }
 }

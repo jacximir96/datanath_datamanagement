@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace infrastructure.Repository
+namespace application.Interfaces
 {
-    public interface IRepository
+    public interface IResponse
     {
-        Task<ResponseDomain> CreateTemplate(Template template);      
+        ResponseDomain GetResponse(string message, bool isSuccess);
     }
 }
