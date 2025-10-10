@@ -47,6 +47,42 @@ namespace infrastructure.Repository
 
         }
 
+        public async Task<ResponseDomain> Update(SubRequest subReq, Connection connection, string status)
+        {
+            ResponseDomain res = null;
+            try
+            {
+
+                using (CosmosClient cosmos = (CosmosClient)_connection.CreateConnection(connection.adapter).GetObjectDataBase())
+                {
+                    var container = cosmos.GetDatabase(_configuration.GetSection("cosmosdb").Value).GetContainer(_configuration.GetSection("requirementcontainer").Value);
+
+                    var response = await container.ReadItemAsync<Requirement>(
+                            subReq.id,
+                            new PartitionKey(subReq.id)
+                         );
+
+                    Requirement _requirement = response.Resource;
+                    _requirement.status = status;
+                    _requirement.progress = subReq.progress;
+                    _requirement.completedAt = subReq.completedAt;
+                    _requirement.references = subReq.references;
+
+                    await container.ReplaceItemAsync(
+                                    item: _requirement,
+                                    id: _requirement.id,
+                    partitionKey: new PartitionKey(subReq.id));
+                    res = GetResponse(ResourceInfra.RecordUpdatedOk, true);
+                    return res;
+                }
+            }
+            catch (Exception e)
+            {
+                res = GetResponse(e.Message, false);
+                return res;
+            }
+        }
+
 
         public ResponseDomain GetResponse(string message, bool isSuccess)
         {

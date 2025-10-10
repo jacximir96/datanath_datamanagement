@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace application.Interfaces
 {
-    public interface ISubRequestCompleted
+    public interface ISubRequest
     {
-        Task<ResponseDomain> ReceiveSubRequestCompleted(SubRequestCompleted subReq);
+        Task<ResponseDomain> ReceiveSubRequestCompleted(SubRequest subReq);
     }
 }

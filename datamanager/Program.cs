@@ -8,9 +8,11 @@ using infrastructure.Repository;
 
     var builder = WebApplication.CreateBuilder(args);
     var hostBuilder = Host.CreateApplicationBuilder(args);
+    hostBuilder.Services.AddScoped<IConnectionFactory, ConnectionFactory>();
+    hostBuilder.Services.AddScoped<ISubRequest, SubRequestService>();
+    hostBuilder.Services.AddScoped<ISubRequestRepository, SubRequestRepository>();
     hostBuilder.Services.AddHostedService<NatsWorker>();
-    hostBuilder.Services.AddScoped<ISubRequestCompleted, SubRequestCompletedService>();
-    hostBuilder.Services.AddScoped<ISubRequestCompletedRepository, SubRequestCompletedRepository>();
+    hostBuilder.Services.AddScoped<IRepository, RequirementRepository>();
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
